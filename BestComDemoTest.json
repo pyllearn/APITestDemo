@@ -118,15 +118,15 @@
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
+								"id": "ca0fee6f-474b-49ae-9799-1c9acd26e018",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"tests[\"Name should not be empty\"] = jsonData.name.length > 0;",
-									"tests[\"Namespace should match 'jQuery'\"] = jsonData.namespace === 'jQuery';",
+									"//tests[\"Namespace should match 'jQuery'\"] = jsonData.namespace === 'jQuery';",
 									"tests[\"License should match 'MIT'\"] = jsonData.license === 'MIT';",
 									"tests[\"Library should contain at least two keywords\"] = jsonData.keywords.length > 1;"
 								],
-								"id": "ca0fee6f-474b-49ae-9799-1c9acd26e018"
+								"type": "text/javascript"
 							}
 						}
 					],
