@@ -1,0 +1,375 @@
+{
+	"info": {
+		"_postman_id": "af33ed99-1d29-4ff4-8696-2d9501fe1d5e",
+		"name": "BestCom Demo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Natural Language Understanding",
+			"item": [
+				{
+					"name": "ListCategory",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{nlu_password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{nlu_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"url\": \"www.ibm.com\",\n  \"features\": {\n    \"categories\": {\n      \"limit\": 3\n    }\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_nlu}}/api/v1/analyze?version=2020-08-01",
+							"host": [
+								"{{url_nlu}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"analyze"
+							],
+							"query": [
+								{
+									"key": "version",
+									"value": "2020-08-01"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetSentimental Copy",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{nlu_password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{nlu_user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"language\": \"en\",\n    \"text\": \"that movie is so boring\",\n    \"features\": {\n        \"sentiment\": {}\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url_nlu}}/api/v1/analyze?version=2020-08-01",
+							"host": [
+								"{{url_nlu}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"analyze"
+							],
+							"query": [
+								{
+									"key": "version",
+									"value": "2020-08-01"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "CDN_JS",
+			"item": [
+				{
+					"name": "Get details about jQuery library",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Name should not be empty\"] = jsonData.name.length > 0;",
+									"tests[\"Namespace should match 'jQuery'\"] = jsonData.namespace === 'jQuery';",
+									"tests[\"License should match 'MIT'\"] = jsonData.license === 'MIT';",
+									"tests[\"Library should contain at least two keywords\"] = jsonData.keywords.length > 1;"
+								],
+								"id": "ca0fee6f-474b-49ae-9799-1c9acd26e018"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.cdnjs.com/libraries/jquery",
+							"protocol": "https",
+							"host": [
+								"api",
+								"cdnjs",
+								"com"
+							],
+							"path": [
+								"libraries",
+								"jquery"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get list of JS libraries",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2795d4ae-297c-4e42-a83e-22e054360702",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"More than 1 JS library should be returned\"] = jsonData.results.length > 1;",
+									"",
+									"var librariesHaveName = true;",
+									"var librariesHaveLatestUrl = true;",
+									"",
+									"for (var i = 0; i < jsonData.results.length; i++) {",
+									"    if (jsonData.results[i].name && jsonData.results[i].name.length < 1) {",
+									"        librariesHaveName = false;",
+									"        break;",
+									"    }",
+									"    if (jsonData.results[i].latest && jsonData.results[i].latest.length < 1) {",
+									"        librariesHaveLatestUrl = false;",
+									"        break;",
+									"    }",
+									"}",
+									"tests[\"Each library should have name\"] = librariesHaveName === true;",
+									"tests[\"Each library should have URL for the latest build\"] = librariesHaveName === true;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_cdnjs}}/libraries/",
+							"host": [
+								"{{url_cdnjs}}"
+							],
+							"path": [
+								"libraries",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Tests for https://api.cdnjs.com/",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "NBU",
+			"item": [
+				{
+					"name": "Get rate for EUR for January, 11",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"EUR currency should be returned\"] = jsonData[0].cc === 'EUR';",
+									"tests[\"Title 'Євро' should be returned\"] = jsonData[0].txt === 'Євро';"
+								],
+								"id": "3c69843a-c09f-47ec-8c66-60ccd21c7ccb"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_nbu}}/NBUStatService/v1/statdirectory/exchange?json&valcode=EUR&date=20170111",
+							"host": [
+								"{{url_nbu}}"
+							],
+							"path": [
+								"NBUStatService",
+								"v1",
+								"statdirectory",
+								"exchange"
+							],
+							"query": [
+								{
+									"key": "json",
+									"value": null
+								},
+								{
+									"key": "valcode",
+									"value": "EUR"
+								},
+								{
+									"key": "date",
+									"value": "20170111"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get rate for USD for January, 11",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"USD currency should be returned\"] = jsonData[0].cc === 'USD';",
+									"tests[\"Title 'Долар США' should be returned\"] = jsonData[0].txt === 'Долар США';"
+								],
+								"id": "51c9a4b1-ae05-4caf-8ee2-55048ab4f5a8"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_nbu}}/NBUStatService/v1/statdirectory/exchange?json&valcode=USD&date=20170111",
+							"host": [
+								"{{url_nbu}}"
+							],
+							"path": [
+								"NBUStatService",
+								"v1",
+								"statdirectory",
+								"exchange"
+							],
+							"query": [
+								{
+									"key": "json",
+									"value": null
+								},
+								{
+									"key": "valcode",
+									"value": "USD"
+								},
+								{
+									"key": "date",
+									"value": "20170111"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET list of currencies for January, 11",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"List should contain more than 1 element\"] = jsonData.length > 1;",
+									"",
+									"var dateMathes = true;",
+									"var isUsdFound = false;",
+									"var isEurFound = false;",
+									"",
+									"for (var i = 0; i < jsonData.length; i++) {",
+									"    if (jsonData[i].cc == 'USD') {",
+									"        isUsdFound = true;",
+									"    }",
+									"    ",
+									"    if (jsonData[i].cc == 'EUR') {",
+									"        isEurFound = true;",
+									"    }",
+									"    ",
+									"    if (jsonData[i].exchangedate != \"11.01.2017\") {",
+									"        dateMathes = false;",
+									"    }",
+									"}",
+									"",
+									"tests[\"Exchange date '11.01.2017' should be returned\"] = dateMathes === true;",
+									"",
+									"tests[\"List should contain rate for USD\"] = isUsdFound === true;",
+									"tests[\"List should contain rate for EUR\"] = isEurFound === true;"
+								],
+								"id": "dcf48f44-f7a5-4e7f-aafe-d1e122c971ab"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url_nbu}}/NBUStatService/v1/statdirectory/exchange?json&date=20170111",
+							"host": [
+								"{{url_nbu}}"
+							],
+							"path": [
+								"NBUStatService",
+								"v1",
+								"statdirectory",
+								"exchange"
+							],
+							"query": [
+								{
+									"key": "json",
+									"value": null
+								},
+								{
+									"key": "date",
+									"value": "20170111"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
