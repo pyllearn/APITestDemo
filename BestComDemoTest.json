@@ -10,6 +10,24 @@
 			"item": [
 				{
 					"name": "ListCategory",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f2b42324-248c-4e10-b8e3-67e199904802",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"const jsonData = pm.response.json();",
+									"pm.test(\"Test data type of the response\", () => {",
+									"  pm.expect(jsonData.categories).to.be.an(\"array\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "basic",
@@ -58,7 +76,26 @@
 					"response": []
 				},
 				{
-					"name": "GetSentimental Copy",
+					"name": "GetSentimental",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ead7e7f5-3baa-4e69-bec2-94658f710300",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"const jsonData = pm.response.json();",
+									"pm.test(\"Test data type of the response\", () => {",
+									"  pm.expect(jsonData.sentiment.document).to.be.an(\"object\");",
+									"  pm.expect(jsonData.sentiment.document.score).to.be.an(\"number\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "basic",
@@ -134,12 +171,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://api.cdnjs.com/libraries/jquery",
-							"protocol": "https",
+							"raw": "{{url_cdnjs}}/libraries/jquery",
 							"host": [
-								"api",
-								"cdnjs",
-								"com"
+								"{{url_cdnjs}}"
 							],
 							"path": [
 								"libraries",
